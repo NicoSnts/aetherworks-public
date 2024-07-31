@@ -88,7 +88,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       let isLocked = false;
       const magneticEffectVelocity = 0.3;
-      const cursorPadding = 0.35; // Fixed padding in rem
+      const cursorPadding = 0.2; // Fixed padding in rem
       const additionalPadding = 0.8; // Additional padding for links without border-radius in rem
       const additionalBorderRadius = "0.3rem"; // Border-radius for links without border-radius
 
