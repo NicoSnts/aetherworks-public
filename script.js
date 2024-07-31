@@ -1,4 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
+
+  console.log('Aetherworks JS v1.2');
   /* Video players */
 
   /* Initialize the player with ID 'player' */
