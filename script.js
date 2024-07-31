@@ -213,8 +213,8 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  /* Horizontal scroll HOW Section */
-  /*function setupHorizontalScroll() {
+  /* Horizontal scroll HOW Section*/ 
+  function setupHorizontalScroll() {
     const globalWrapperSelector = ".section_how";
     const cardsWrapperSelector = ".how_horizontal-scroll-content-cards";
     const panelSelector = ".step_card";
@@ -245,78 +245,7 @@ document.addEventListener("DOMContentLoaded", function () {
         x: -scrollDistance,
         ease: "none",
       });
-  }*/
-      function setupHorizontalScroll() {
-        const globalWrapperSelector = ".section_how";
-        const cardsWrapperSelector = ".how_horizontal-scroll-content-cards";
-        const panelSelector = ".step_card";
-        const scrollVelocity = 2; // Adjusted for smoother scroll
-    
-        const panels = gsap.utils.toArray(panelSelector);
-        const totalPanels = panels.length;
-        const globalWrapper = document.querySelector(globalWrapperSelector);
-        const cardsWrapper = document.querySelector(cardsWrapperSelector);
-    
-        // Calculate the total width of the cards wrapper and the necessary scroll distance
-        const cardsWrapperWidth = cardsWrapper.scrollWidth;
-        const globalWrapperWidth = globalWrapper.clientWidth;
-        const scrollDistance = cardsWrapperWidth - globalWrapperWidth + 0.1 * globalWrapperWidth;
-    
-        // Function to update the ScrollTrigger settings
-        function updateScrollTrigger() {
-            ScrollTrigger.clearMatchMedia(); // Clear previous media query settings
-            ScrollTrigger.matchMedia({
-                "(min-width: 768px)": function() {
-                    // GSAP Timeline for horizontal scroll
-                    gsap
-                      .timeline({
-                        scrollTrigger: {
-                          trigger: globalWrapper,
-                          start: "top top",
-                          end: `+=${scrollDistance}`,
-                          scrub: scrollVelocity,
-                          pin: true,
-                          invalidateOnRefresh: true, // Recalculate on refresh
-                          onEnter: () => {
-                            const cardsWrapperWidth = cardsWrapper.scrollWidth;
-                            const globalWrapperWidth = globalWrapper.clientWidth;
-                            const scrollDistance = cardsWrapperWidth - globalWrapperWidth + 0.1 * globalWrapperWidth;
-    
-                            gsap.timeline({
-                                scrollTrigger: {
-                                    trigger: globalWrapper,
-                                    start: "top top",
-                                    end: `+=${scrollDistance}`,
-                                    scrub: scrollVelocity,
-                                    pin: true,
-                                    invalidateOnRefresh: true,
-                                },
-                            }).to(cardsWrapper, {
-                                x: -scrollDistance,
-                                ease: "none",
-                            });
-                          },
-                        },
-                      })
-                      .to(cardsWrapper, {
-                        x: -scrollDistance,
-                        ease: "none",
-                      });
-                }
-            });
-        }
-    
-        // Initial setup
-        updateScrollTrigger();
-    
-        // Update ScrollTrigger settings on window resize or content change
-        window.addEventListener("resize", updateScrollTrigger);
-        new MutationObserver(updateScrollTrigger).observe(document.body, {
-            childList: true,
-            subtree: true,
-        });
-    }
-    
+  }
 
   // Footer Background Animation
   function setupFooterBackgroundAnimation() {
