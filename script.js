@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
-  console.log("Aetherworks JS v1.4");
+  console.log("Aetherworks JS v1.5");
   /* Video players */
 
   /* Initialize the player with ID 'player' */
@@ -34,28 +34,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
 document.addEventListener("DOMContentLoaded", function () {
   gsap.registerPlugin(ScrollTrigger);
-
-  /* Smooth body scroll */
-  function enableSmoothScroll() {
-    // Set the smooth scrolling container (usually the body)
-    gsap.to("body", {
-      scrollTrigger: {
-        trigger: "body",
-        start: "top top",
-        end: "bottom bottom",
-        scrub: true,
-        invalidateOnRefresh: true,
-        // Optional: optimize FPS (frames per second)
-        onUpdate: function (self) {
-          const progress = self.progress.toFixed(2);
-          console.log(`Smooth scroll progress: ${progress}`);
-        },
-      },
-      y: () => -(document.documentElement.scrollHeight - document.documentElement.clientHeight),
-      ease: "none",
-      duration: 1, // Adjust the duration as needed
-    });
-  }
 
   // Animate Text Color
   function animateTextColor() {
@@ -419,7 +397,6 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   /* Initialize all functions */
-  enableSmoothScroll();
   initializeCalUI();
   animateTextColor();
   setupCustomCursor();
