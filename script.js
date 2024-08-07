@@ -223,7 +223,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // Horizontal scroll HOW Section
   //
   */
-  function setupHorizontalScroll() {
+  /*function setupHorizontalScroll() {
     const globalWrapperSelector = ".how_component";
     const containerSelector = ".container-large";
     const cardsWrapperSelector = ".how_horizontal-scroll-content-cards";
@@ -295,7 +295,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // Call the setupHorizontalScroll function
-  setupHorizontalScroll();
+  setupHorizontalScroll();*/
 
   /*
   //
