@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
-  console.log("Aetherworks JS v1.92e");
+  console.log("Aetherworks JS v1.92f");
 
   /* Video players */
 
@@ -225,26 +225,27 @@ document.addEventListener("DOMContentLoaded", function () {
   */
   function setupHorizontalScroll() {
     const globalWrapperSelector = ".how_component";
+    const containerSelector = ".container-large";
     const cardsWrapperSelector = ".how_horizontal-scroll-content-cards";
     const panelSelector = ".step_card";
     const scrollVelocity = 2; // Adjusted for smoother scroll
 
     const panels = gsap.utils.toArray(panelSelector);
     const globalWrapper = document.querySelector(globalWrapperSelector);
+    const container = document.querySelector(containerSelector);
     const cardsWrapper = document.querySelector(cardsWrapperSelector);
 
     // Function to calculate and set the scroll distance
     function setScrollDistance() {
       // Calculate the total width of the cards wrapper and the necessary scroll distance
-      const globalWrapperStyle = window.getComputedStyle(globalWrapper);
-      const globalWrapperPaddingLeft = parseFloat(globalWrapperStyle.paddingLeft);
-      const globalWrapperPaddingRight = parseFloat(globalWrapperStyle.paddingRight);
+      const containerStyle = window.getComputedStyle(container);
+      const containerPaddingLeft = parseFloat(containerStyle.paddingLeft);
+      const containerPaddingRight = parseFloat(containerStyle.paddingRight);
 
       const cardsWrapperWidth = cardsWrapper.scrollWidth;
-      const globalWrapperWidth =
-        globalWrapper.clientWidth - globalWrapperPaddingLeft - globalWrapperPaddingRight;
-
-      const scrollDistance = cardsWrapperWidth - globalWrapperWidth;
+      const globalWrapperWidth = globalWrapper.clientWidth;
+      const scrollDistance =
+        cardsWrapperWidth + containerPaddingLeft + containerPaddingRight - globalWrapperWidth;
 
       // Clear any existing ScrollTriggers
       ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
