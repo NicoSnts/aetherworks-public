@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
-  console.log("Aetherworks JS v1.6");
+  console.log("Aetherworks JS v1.7");
 
   /* Video players */
 
@@ -87,6 +87,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (!("ontouchstart" in window || navigator.maxTouchPoints)) {
       const cursor = document.querySelector(".cursor");
       const cursorDot = document.querySelector(".cursor_dot");
+      const navbar = document.getElementById("navbar");
 
       let isLocked = false;
       const magneticEffectVelocity = 0.3;
@@ -94,15 +95,15 @@ document.addEventListener("DOMContentLoaded", function () {
       const additionalPadding = 0.8; // Additional padding for links without border-radius in rem
       const additionalBorderRadius = "0.3rem"; // Border-radius for links without border-radius
 
-      document.addEventListener("mousedown", () => {
+      function handleMouseDown() {
         if (!isLocked) gsap.to(cursor, { scale: 0.9, duration: 0.1 });
-      });
+      }
 
-      document.addEventListener("mouseup", () => {
+      function handleMouseUp() {
         if (!isLocked) gsap.to(cursor, { scale: 1, duration: 0.1 });
-      });
+      }
 
-      document.addEventListener("mousemove", (event) => {
+      function handleMouseMove(event) {
         if (!isLocked) {
           gsap.to(cursor, {
             x: event.clientX,
@@ -111,104 +112,116 @@ document.addEventListener("DOMContentLoaded", function () {
             ease: "power2.out",
           });
         }
-      });
+      }
+
+      function handleLinkMouseEnter(event) {
+        if (navbar.contains(event.currentTarget)) return;
+
+        isLocked = true;
+        const target = event.currentTarget;
+        const rect = target.getBoundingClientRect();
+        const styles = window.getComputedStyle(target);
+        let borderRadius = styles.getPropertyValue("border-radius") || "0.2rem";
+        let padding = cursorPadding;
+        if (borderRadius === "0px" || borderRadius === "") {
+          padding = additionalPadding;
+          borderRadius = additionalBorderRadius;
+        }
+        cursorDot.style.borderRadius = borderRadius;
+        cursor.classList.add("lock");
+        gsap.to(cursor, {
+          x: rect.left + rect.width / 2,
+          y: rect.top + rect.height / 2,
+          width: `calc(${rect.width}px + ${padding}rem)`,
+          height: `calc(${rect.height}px + ${padding}rem)`,
+          duration: 0.1,
+          ease: "power2.out",
+        });
+        gsap.to(target, {
+          scale: 1.05,
+          duration: 0.1,
+          ease: "power2.out",
+        });
+      }
+
+      function handleLinkMouseMove(event) {
+        const target = event.currentTarget;
+        const rect = target.getBoundingClientRect();
+        const offsetX = (event.clientX - rect.left - rect.width / 2) * magneticEffectVelocity;
+        const offsetY = (event.clientY - rect.top - rect.height / 2) * magneticEffectVelocity;
+        gsap.to(cursor, {
+          x: rect.left + rect.width / 2 + offsetX,
+          y: rect.top + rect.height / 2 + offsetY,
+          duration: 0.1,
+          ease: "power2.out",
+        });
+        gsap.to(target, {
+          x: offsetX,
+          y: offsetY,
+          duration: 0.1,
+          ease: "power2.out",
+        });
+      }
+
+      function handleLinkMouseLeave(event) {
+        if (navbar.contains(event.currentTarget)) return;
+
+        isLocked = false;
+        const target = event.currentTarget;
+        cursorDot.style.borderRadius = "50%";
+        gsap.to(cursor, {
+          width: "1em",
+          height: "1em",
+          x: event.clientX,
+          y: event.clientY,
+          duration: 0.1,
+          ease: "power2.out",
+        });
+        gsap.to(target, {
+          x: 0,
+          y: 0,
+          scale: 1,
+          duration: 0.1,
+          ease: "power2.out",
+        });
+        setTimeout(() => {
+          if (!isLocked) cursor.classList.remove("lock");
+        }, 100);
+      }
+
+      function handleTextMouseOver() {
+        cursorDot.style.borderRadius = "2px";
+        gsap.to(cursor, {
+          width: "0.2em",
+          height: "1.5em",
+          duration: 0.1,
+          ease: "power2.out",
+        });
+      }
+
+      function handleTextMouseOut() {
+        cursorDot.style.borderRadius = "50%";
+        gsap.to(cursor, {
+          width: "1em",
+          height: "1em",
+          duration: 0.1,
+          ease: "power2.out",
+        });
+      }
+
+      document.addEventListener("mousedown", handleMouseDown);
+      document.addEventListener("mouseup", handleMouseUp);
+      document.addEventListener("mousemove", handleMouseMove);
 
       document.querySelectorAll("a").forEach((link) => {
-        let rect = null;
-
-        link.addEventListener("mouseenter", (event) => {
-          isLocked = true;
-          const target = event.currentTarget;
-          rect = target.getBoundingClientRect();
-          const styles = window.getComputedStyle(target);
-          let borderRadius = styles.getPropertyValue("border-radius") || "0.2rem";
-          let padding = cursorPadding;
-          if (borderRadius === "0px" || borderRadius === "") {
-            padding = additionalPadding;
-            borderRadius = additionalBorderRadius;
-          }
-          cursorDot.style.borderRadius = borderRadius; // Apply border-radius to cursor_dot
-          cursor.classList.add("lock");
-          gsap.to(cursor, {
-            x: rect.left + rect.width / 2,
-            y: rect.top + rect.height / 2,
-            width: `calc(${rect.width}px + ${padding}rem)`,
-            height: `calc(${rect.height}px + ${padding}rem)`,
-            duration: 0.1,
-            ease: "power2.out",
-          });
-          gsap.to(target, {
-            scale: 1.05,
-            duration: 0.1,
-            ease: "power2.out",
-          });
-        });
-
-        link.addEventListener("mousemove", (event) => {
-          if (rect) {
-            const target = event.currentTarget;
-            const offsetX = (event.clientX - rect.left - rect.width / 2) * magneticEffectVelocity;
-            const offsetY = (event.clientY - rect.top - rect.height / 2) * magneticEffectVelocity;
-            gsap.to(cursor, {
-              x: rect.left + rect.width / 2 + offsetX,
-              y: rect.top + rect.height / 2 + offsetY,
-              duration: 0.1,
-              ease: "power2.out",
-            });
-            gsap.to(target, {
-              x: offsetX,
-              y: offsetY,
-              duration: 0.1,
-              ease: "power2.out",
-            });
-          }
-        });
-
-        link.addEventListener("mouseleave", (event) => {
-          isLocked = false;
-          const target = event.currentTarget;
-          cursorDot.style.borderRadius = "50%"; // Reset to the default border-radius
-          gsap.to(cursor, {
-            width: "1em",
-            height: "1em",
-            x: event.clientX,
-            y: event.clientY,
-            duration: 0.1,
-            ease: "power2.out",
-          });
-          gsap.to(target, {
-            x: 0,
-            y: 0,
-            scale: 1,
-            duration: 0.1,
-            ease: "power2.out",
-          });
-          setTimeout(() => {
-            if (!isLocked) cursor.classList.remove("lock");
-          }, 100);
-        });
+        link.addEventListener("mouseenter", handleLinkMouseEnter);
+        link.addEventListener("mousemove", handleLinkMouseMove);
+        link.addEventListener("mouseleave", handleLinkMouseLeave);
       });
 
       document.querySelectorAll("p, h1, h2, h3, h4, h5, h6, textarea, input").forEach((elem) => {
-        elem.addEventListener("mouseover", () => {
-          cursorDot.style.borderRadius = "2px"; // Set border-radius to 2px for text elements
-          gsap.to(cursor, {
-            width: "0.2em",
-            height: "1.5em",
-            duration: 0.1,
-            ease: "power2.out",
-          });
-        });
-
-        elem.addEventListener("mouseout", () => {
-          cursorDot.style.borderRadius = "50%"; // Reset to the default border-radius
-          gsap.to(cursor, {
-            width: "1em",
-            height: "1em",
-            duration: 0.1,
-            ease: "power2.out",
-          });
-        });
+        elem.addEventListener("mouseover", handleTextMouseOver);
+        elem.addEventListener("mouseout", handleTextMouseOut);
       });
     }
   }
@@ -244,7 +257,7 @@ document.addEventListener("DOMContentLoaded", function () {
       .to(cardsWrapper, {
         x: -scrollDistance,
         ease: "none",
-        willChange: "transform"
+        willChange: "transform",
       });
   }
 
