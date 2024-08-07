@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
-  console.log("Aetherworks JS v1.92f");
+  console.log("Aetherworks JS v1.92g");
 
   /* Video players */
 
@@ -244,8 +244,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
       const cardsWrapperWidth = cardsWrapper.scrollWidth;
       const globalWrapperWidth = globalWrapper.clientWidth;
-      const scrollDistance =
-        cardsWrapperWidth + containerPaddingLeft + containerPaddingRight - globalWrapperWidth;
+      const totalPadding = containerPaddingLeft + containerPaddingRight;
+      const scrollDistance = cardsWrapperWidth + totalPadding - globalWrapperWidth;
 
       // Clear any existing ScrollTriggers
       ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
