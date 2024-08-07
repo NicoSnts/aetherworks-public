@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
-  console.log("Aetherworks JS v1.92");
+  console.log("Aetherworks JS v1.92b");
 
   /* Video players */
 
@@ -225,45 +225,44 @@ document.addEventListener("DOMContentLoaded", function () {
   */
   function setupHorizontalScroll() {
     const globalWrapperSelector = ".how_component";
-    const containerSelector = ".container-large"; // Adjusted for the container
     const cardsWrapperSelector = ".how_horizontal-scroll-content-cards";
     const panelSelector = ".step_card";
     const scrollVelocity = 2; // Adjusted for smoother scroll
 
     const panels = gsap.utils.toArray(panelSelector);
     const globalWrapper = document.querySelector(globalWrapperSelector);
-    const container = document.querySelector(containerSelector); // Adjusted for the container
     const cardsWrapper = document.querySelector(cardsWrapperSelector);
 
     // Function to calculate and set the scroll distance
     function setScrollDistance() {
-      const containerStyle = window.getComputedStyle(container);
-      const containerPaddingLeft = parseFloat(containerStyle.paddingLeft);
-      const containerPaddingRight = parseFloat(containerStyle.paddingRight);
-
+      // Calculate the total width of the cards wrapper and the necessary scroll distance
       const cardsWrapperWidth = cardsWrapper.scrollWidth;
       const globalWrapperWidth = globalWrapper.clientWidth;
-      const scrollDistance = cardsWrapperWidth - globalWrapperWidth + containerPaddingLeft + containerPaddingRight;
+
+      // Calculate the scroll distance to ensure the last card is fully visible
+      const scrollDistance = cardsWrapperWidth - globalWrapperWidth;
 
       // Clear any existing ScrollTriggers
-      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
 
       // GSAP Timeline for horizontal scroll
-      gsap.timeline({
-        scrollTrigger: {
-          trigger: globalWrapper,
-          start: "top top",
-          end: `+=${scrollDistance}`,
-          scrub: scrollVelocity,
-          pin: true,
-          anticipatePin: 1,
-          invalidateOnRefresh: true
-        },
-      }).to(cardsWrapper, {
-        x: -scrollDistance,
-        ease: "none",
-        willChange: "transform",
-      });
+      gsap
+        .timeline({
+          scrollTrigger: {
+            trigger: globalWrapper,
+            start: "top top",
+            end: `+=${scrollDistance}`,
+            scrub: scrollVelocity,
+            pin: true,
+            anticipatePin: 1,
+            invalidateOnRefresh: true,
+          },
+        })
+        .to(cardsWrapper, {
+          x: -scrollDistance,
+          ease: "none",
+          willChange: "transform",
+        });
     }
 
     // Initialize the scroll distance
@@ -276,9 +275,10 @@ document.addEventListener("DOMContentLoaded", function () {
   // Function to debounce events
   function debounce(func, wait = 10, immediate = false) {
     let timeout;
-    return function() {
-      const context = this, args = arguments;
-      const later = function() {
+    return function () {
+      const context = this,
+        args = arguments;
+      const later = function () {
         timeout = null;
         if (!immediate) func.apply(context, args);
       };
