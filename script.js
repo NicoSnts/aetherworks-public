@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
-  console.log("Aetherworks JS v1.9");
+  console.log("Aetherworks JS v1.91");
 
   /* Video players */
 
@@ -220,24 +220,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
   /* Horizontal scroll HOW Section*/
 
-  function debounce(func, wait = 10, immediate = false) {
-    let timeout;
-    return function () {
-      const context = this,
-        args = arguments;
-      const later = function () {
-        timeout = null;
-        if (!immediate) func.apply(context, args);
-      };
-      const callNow = immediate && !timeout;
-      clearTimeout(timeout);
-      timeout = setTimeout(later, wait);
-      if (callNow) func.apply(context, args);
-    };
-  }
-
   function setupHorizontalScroll() {
-    const globalWrapperSelector = ".section_how";
+    const globalWrapperSelector = ".how_component";
     const cardsWrapperSelector = ".how_horizontal-scroll-content-cards";
     const panelSelector = ".step_card";
     const scrollVelocity = 2; // Adjusted for smoother scroll
@@ -248,7 +232,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Function to calculate and set the scroll distance
     function setScrollDistance() {
-      // Calculate the total width of the cards wrapper and the necessary scroll distance
       const cardsWrapperWidth = cardsWrapper.scrollWidth;
       const globalWrapperWidth = globalWrapper.clientWidth;
       const scrollDistance = cardsWrapperWidth - globalWrapperWidth;
@@ -265,6 +248,8 @@ document.addEventListener("DOMContentLoaded", function () {
             end: `+=${scrollDistance}`,
             scrub: scrollVelocity,
             pin: true,
+            anticipatePin: 1,
+            invalidateOnRefresh: true,
           },
         })
         .to(cardsWrapper, {
@@ -280,6 +265,26 @@ document.addEventListener("DOMContentLoaded", function () {
     // Recalculate scroll distance on window resize
     window.addEventListener("resize", debounce(setScrollDistance, 150));
   }
+
+  // Function to debounce events
+  function debounce(func, wait = 10, immediate = false) {
+    let timeout;
+    return function () {
+      const context = this,
+        args = arguments;
+      const later = function () {
+        timeout = null;
+        if (!immediate) func.apply(context, args);
+      };
+      const callNow = immediate && !timeout;
+      clearTimeout(timeout);
+      timeout = setTimeout(later, wait);
+      if (callNow) func.apply(context, args);
+    };
+  }
+
+  // Call the setupHorizontalScroll function
+  setupHorizontalScroll();
 
   // Footer Background Animation
   function setupFooterBackgroundAnimation() {
@@ -435,11 +440,8 @@ document.addEventListener("DOMContentLoaded", function () {
   initializeCalUI();
   animateTextColor();
   setupCustomCursor();
-  setupHorizontalScroll();
   setupFooterBackgroundAnimation();
   updateBookingMonth();
   initializeEasterEgg();
   preventClickOnMobileOrTablet("logo-footer");
 });
-
-window.addEventListener("resize", setupHorizontalScroll);
