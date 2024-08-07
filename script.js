@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
-  console.log("Aetherworks JS v1.5");
+  console.log("Aetherworks JS v1.6");
+
   /* Video players */
 
   /* Initialize the player with ID 'player' */
@@ -243,6 +244,7 @@ document.addEventListener("DOMContentLoaded", function () {
       .to(cardsWrapper, {
         x: -scrollDistance,
         ease: "none",
+        willChange: "transform"
       });
   }
 
@@ -406,3 +408,5 @@ document.addEventListener("DOMContentLoaded", function () {
   initializeEasterEgg();
   preventClickOnMobileOrTablet("logo-footer");
 });
+
+window.addEventListener("resize", setupHorizontalScroll);
