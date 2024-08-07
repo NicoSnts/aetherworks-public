@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
-  console.log("Aetherworks JS v1.91");
- 
+  console.log("Aetherworks JS v1.92");
+
   /* Video players */
 
   /* Initialize the player with ID 'player' */
@@ -218,8 +218,11 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  /* Horizontal scroll HOW Section*/
-
+  /*
+  //
+  // Horizontal scroll HOW Section
+  //
+  */
   function setupHorizontalScroll() {
     const globalWrapperSelector = ".how_component";
     const cardsWrapperSelector = ".how_horizontal-scroll-content-cards";
@@ -234,7 +237,10 @@ document.addEventListener("DOMContentLoaded", function () {
     function setScrollDistance() {
       const cardsWrapperWidth = cardsWrapper.scrollWidth;
       const globalWrapperWidth = globalWrapper.clientWidth;
-      const scrollDistance = cardsWrapperWidth - globalWrapperWidth;
+      const lastPanel = panels[panels.length - 1];
+      const lastPanelRightEdge = lastPanel.getBoundingClientRect().right;
+      const globalWrapperRightEdge = globalWrapper.getBoundingClientRect().right;
+      const scrollDistance = lastPanelRightEdge - globalWrapperRightEdge;
 
       // Clear any existing ScrollTriggers
       ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
@@ -286,7 +292,12 @@ document.addEventListener("DOMContentLoaded", function () {
   // Call the setupHorizontalScroll function
   setupHorizontalScroll();
 
+  /*
+  //
   // Footer Background Animation
+  //
+  */
+
   function setupFooterBackgroundAnimation() {
     const footer = document.querySelector("#footer");
 
