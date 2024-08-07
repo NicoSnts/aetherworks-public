@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
-  console.log("Aetherworks JS v1.92d");
+  console.log("Aetherworks JS v1.92e");
 
   /* Video players */
 
@@ -236,10 +236,14 @@ document.addEventListener("DOMContentLoaded", function () {
     // Function to calculate and set the scroll distance
     function setScrollDistance() {
       // Calculate the total width of the cards wrapper and the necessary scroll distance
-      const cardsWrapperWidth = cardsWrapper.scrollWidth;
-      const globalWrapperWidth = globalWrapper.clientWidth;
+      const globalWrapperStyle = window.getComputedStyle(globalWrapper);
+      const globalWrapperPaddingLeft = parseFloat(globalWrapperStyle.paddingLeft);
+      const globalWrapperPaddingRight = parseFloat(globalWrapperStyle.paddingRight);
 
-      // Calculate the scroll distance to ensure the last card is fully visible
+      const cardsWrapperWidth = cardsWrapper.scrollWidth;
+      const globalWrapperWidth =
+        globalWrapper.clientWidth - globalWrapperPaddingLeft - globalWrapperPaddingRight;
+
       const scrollDistance = cardsWrapperWidth - globalWrapperWidth;
 
       // Clear any existing ScrollTriggers
