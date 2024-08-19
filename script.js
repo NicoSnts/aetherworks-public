@@ -123,26 +123,35 @@ document.addEventListener("DOMContentLoaded", function () {
           const target = event.currentTarget;
           rect = target.getBoundingClientRect();
   
-          // Add a glow effect to the button
-          gsap.to(target, {
-            scale: 1.05,
-            boxShadow: "0 4px 20px rgba(255, 255, 255, 0.5)",
+          // Apply the glowing light effect to the cursor itself
+          gsap.to(cursor, {
+            height: "220%",
+            width: "220%",
+            background: "radial-gradient(rgba(255, 255, 255, 0.3) 12%, rgba(0, 0, 0, 0.2) 100%)",
+            transform: "translate(-50%, -50%)",
+            duration: 0.3,
+            ease: "power2.out",
+            pointerEvents: "none",
+          });
+  
+          // Position the cursor above the button
+          gsap.to(cursor, {
+            x: rect.left + rect.width / 2,
+            y: rect.top + rect.height / 2,
             duration: 0.3,
             ease: "power2.out",
           });
   
-          // Add a subtle glow to the cursor itself
-          gsap.to(cursor, {
-            scale: 1.2,
+          // Optionally, you can add a small scale effect to the button itself
+          gsap.to(target, {
+            scale: 1.05,
             duration: 0.3,
             ease: "power2.out",
-            filter: "brightness(1.5)",
           });
         });
   
         link.addEventListener("mousemove", (event) => {
           if (rect) {
-            const target = event.currentTarget;
             const offsetX = (event.clientX - rect.left - rect.width / 2) * magneticEffectVelocityX;
             const offsetY = (event.clientY - rect.top - rect.height / 2) * magneticEffectVelocityY;
             gsap.to(cursor, {
@@ -166,20 +175,21 @@ document.addEventListener("DOMContentLoaded", function () {
           isLocked = false;
           const target = event.currentTarget;
   
-          // Remove the glow effect from the button
-          gsap.to(target, {
-            scale: 1,
-            boxShadow: "none",
-            x: 0,
-            y: 0,
+          // Reset the cursor effects
+          gsap.to(cursor, {
+            height: "1em",
+            width: "1em",
+            background: "none",
+            transform: "translate(-50%, -50%)",
             duration: 0.3,
             ease: "power2.out",
           });
   
-          // Reset the cursor glow
-          gsap.to(cursor, {
+          // Reset the button scale effect
+          gsap.to(target, {
             scale: 1,
-            filter: "brightness(1)",
+            x: 0,
+            y: 0,
             duration: 0.3,
             ease: "power2.out",
           });
@@ -213,7 +223,7 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     }
   }
-  
+
   /*
   //
   // Footer Background Animation
