@@ -380,7 +380,7 @@ document.addEventListener("DOMContentLoaded", function () {
   /* Initialize all functions */
   initializeCalUI();
   animateTextColor();
-  setupCustomCursor();
+  //setupCustomCursor();
   setupFooterBackgroundAnimation();
   updateBookingMonth();
   initializeEasterEgg();
