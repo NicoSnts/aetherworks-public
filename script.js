@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
-  console.log("Aetherworks JS v1.92g");
+  console.log("Aetherworks JS v1.93");
 
   /* Video players */
 
@@ -89,21 +89,18 @@ document.addEventListener("DOMContentLoaded", function () {
       const cursorDot = document.querySelector(".cursor_dot");
       const navbar = document.getElementById("navbar");
 
-      let isLocked = false;
+      // Set the z-index of the cursor to ensure it is above other elements
+      cursor.style.zIndex = "999";
 
-      const magneticEffectVelocityX = 0.1; // X-axis velocity for horizontal magnetism
-      const magneticEffectVelocityY = 0.15; // Y-axis velocity for vertical magnetism
+      // Separate magnetic effect velocities
+      const magneticEffectVelocityX = 0.1; // Subtle horizontal magnetism
+      const magneticEffectVelocityY = 0.3; // Stronger vertical magnetism
 
-      document.addEventListener("mousedown", () => {
-        if (!isLocked) gsap.to(cursor, { scale: 0.9, duration: 0.1 });
-      });
-
-      document.addEventListener("mouseup", () => {
-        if (!isLocked) gsap.to(cursor, { scale: 1, duration: 0.1 });
-      });
+      // Track if the cursor is currently hovering over a button
+      let isHovering = false;
 
       document.addEventListener("mousemove", (event) => {
-        if (!isLocked) {
+        if (!isHovering) {
           gsap.to(cursor, {
             x: event.clientX,
             y: event.clientY,
@@ -119,17 +116,19 @@ document.addEventListener("DOMContentLoaded", function () {
         link.addEventListener("mouseenter", (event) => {
           if (navbar && navbar.contains(link)) return; // Skip links inside the navbar
 
-          isLocked = true;
-          const target = event.currentTarget;
-          rect = target.getBoundingClientRect();
+          isHovering = true;
+          rect = event.currentTarget.getBoundingClientRect();
 
-          // Slightly increase the cursor size to match the height of the button
+          // Make cursor slightly larger, light effect with subtle inversion, and add blur
           gsap.to(cursor, {
             width: `${rect.height}px`,
             height: `${rect.height}px`,
-            background:
-              "radial-gradient(circle, rgba(255, 255, 255, 0.6) 30%, rgba(255, 255, 255, 0) 70%)",
+            background: "rgba(255, 255, 255, 0.1)", // Light color effect
+            filter: "blur(10px)",
+            borderRadius: "50%", // Maintain circular shape
+            mixBlendMode: "lighten", // Subtle light effect without full inversion
             duration: 0.3,
+            opacity: 0.5,
             ease: "power2.out",
           });
 
@@ -140,61 +139,56 @@ document.addEventListener("DOMContentLoaded", function () {
             duration: 0.3,
             ease: "power2.out",
           });
-
-          // Optionally, slightly scale up the button for additional emphasis
-          gsap.to(target, {
-            scale: 1.05,
-            duration: 0.3,
-            ease: "power2.out",
-          });
         });
 
         link.addEventListener("mousemove", (event) => {
           if (rect) {
+            // Calculate the magnetic pull based on cursor position within the button
             const offsetX = (event.clientX - rect.left - rect.width / 2) * magneticEffectVelocityX;
             const offsetY = (event.clientY - rect.top - rect.height / 2) * magneticEffectVelocityY;
-            gsap.to(cursor, {
-              x: rect.left + rect.width / 2 + offsetX,
-              y: rect.top + rect.height / 2 + offsetY,
+
+            // Move the button slightly towards the cursor
+            gsap.to(event.currentTarget, {
+              x: offsetX,
+              y: offsetY,
               duration: 0.1,
               ease: "power2.out",
             });
-            gsap.to(target, {
-              x: offsetX,
-              y: offsetY,
+
+            // Move the cursor within the button area as well
+            gsap.to(cursor, {
+              x: event.clientX + offsetX,
+              y: event.clientY + offsetY,
               duration: 0.1,
               ease: "power2.out",
             });
           }
         });
 
-        link.addEventListener("mouseleave", (event) => {
+        link.addEventListener("mouseleave", () => {
           if (navbar && navbar.contains(link)) return; // Skip links inside the navbar
 
-          isLocked = false;
-          const target = event.currentTarget;
+          isHovering = false;
 
-          // Reset the cursor to its original size and remove the light effect
+          // Reset cursor to its original size, position, remove light effect, blur, and blend mode
           gsap.to(cursor, {
             width: "1em",
             height: "1em",
             background: "none",
+            filter: "none",
+            mixBlendMode: "normal", // Reset the blend mode to default
             duration: 0.3,
+            opacity: 1,
             ease: "power2.out",
           });
 
-          // Reset the button scale effect
-          gsap.to(target, {
-            scale: 1,
+          // Reset button position
+          gsap.to(event.currentTarget, {
             x: 0,
             y: 0,
             duration: 0.3,
             ease: "power2.out",
           });
-
-          setTimeout(() => {
-            if (!isLocked) cursor.classList.remove("lock");
-          }, 100);
         });
       });
 
@@ -380,7 +374,7 @@ document.addEventListener("DOMContentLoaded", function () {
   /* Initialize all functions */
   initializeCalUI();
   animateTextColor();
-  //setupCustomCursor();
+  setupCustomCursor();
   setupFooterBackgroundAnimation();
   updateBookingMonth();
   initializeEasterEgg();
