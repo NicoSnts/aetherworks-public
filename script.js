@@ -90,9 +90,9 @@ document.addEventListener("DOMContentLoaded", function () {
       const navbar = document.getElementById("navbar");
 
       let isLocked = false;
-      const magneticEffectVelocity = 0.3;
-      const cursorPadding = 0.2; // Fixed padding in rem
-      const additionalPadding = 0.8; // Additional padding for links without border-radius in rem
+      const magneticEffectVelocity = 0.15;
+      const cursorPadding = 0.1; // Fixed padding in rem
+      const additionalPadding = 0.4; // Additional padding for links without border-radius in rem
       const additionalBorderRadius = "0.3rem"; // Border-radius for links without border-radius
 
       document.addEventListener("mousedown", () => {
@@ -217,85 +217,6 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     }
   }
-
-  /*
-  //
-  // Horizontal scroll HOW Section
-  //
-  */
-  /*function setupHorizontalScroll() {
-    const globalWrapperSelector = ".how_component";
-    const containerSelector = ".container-large";
-    const cardsWrapperSelector = ".how_horizontal-scroll-content-cards";
-    const panelSelector = ".step_card";
-    const scrollVelocity = 2; // Adjusted for smoother scroll
-
-    const panels = gsap.utils.toArray(panelSelector);
-    const globalWrapper = document.querySelector(globalWrapperSelector);
-    const container = document.querySelector(containerSelector);
-    const cardsWrapper = document.querySelector(cardsWrapperSelector);
-
-    // Function to calculate and set the scroll distance
-    function setScrollDistance() {
-      // Calculate the total width of the cards wrapper and the necessary scroll distance
-      const containerStyle = window.getComputedStyle(container);
-      const containerPaddingLeft = parseFloat(containerStyle.paddingLeft);
-      const containerPaddingRight = parseFloat(containerStyle.paddingRight);
-
-      const cardsWrapperWidth = cardsWrapper.scrollWidth;
-      const globalWrapperWidth = globalWrapper.clientWidth;
-      const totalPadding = containerPaddingLeft + containerPaddingRight;
-      const scrollDistance = cardsWrapperWidth + totalPadding - globalWrapperWidth;
-
-      // Clear any existing ScrollTriggers
-      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
-
-      // GSAP Timeline for horizontal scroll
-      gsap
-        .timeline({
-          scrollTrigger: {
-            trigger: globalWrapper,
-            start: "top top",
-            end: `+=${scrollDistance}`,
-            scrub: scrollVelocity,
-            pin: true,
-            anticipatePin: 1,
-            invalidateOnRefresh: true,
-          },
-        })
-        .to(cardsWrapper, {
-          x: -scrollDistance,
-          ease: "none",
-          willChange: "transform",
-        });
-    }
-
-    // Initialize the scroll distance
-    setScrollDistance();
-
-    // Recalculate scroll distance on window resize
-    window.addEventListener("resize", debounce(setScrollDistance, 150));
-  }
-
-  // Function to debounce events
-  function debounce(func, wait = 10, immediate = false) {
-    let timeout;
-    return function () {
-      const context = this,
-        args = arguments;
-      const later = function () {
-        timeout = null;
-        if (!immediate) func.apply(context, args);
-      };
-      const callNow = immediate && !timeout;
-      clearTimeout(timeout);
-      timeout = setTimeout(later, wait);
-      if (callNow) func.apply(context, args);
-    };
-  }
-
-  // Call the setupHorizontalScroll function
-  setupHorizontalScroll();*/
 
   /*
   //
