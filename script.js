@@ -88,20 +88,20 @@ document.addEventListener("DOMContentLoaded", function () {
       const cursor = document.querySelector(".cursor");
       const cursorDot = document.querySelector(".cursor_dot");
       const navbar = document.getElementById("navbar");
-  
+
       let isLocked = false;
-  
-      const magneticEffectVelocityX = 0.1;  // X-axis velocity for horizontal magnetism
+
+      const magneticEffectVelocityX = 0.1; // X-axis velocity for horizontal magnetism
       const magneticEffectVelocityY = 0.15; // Y-axis velocity for vertical magnetism
-  
+
       document.addEventListener("mousedown", () => {
         if (!isLocked) gsap.to(cursor, { scale: 0.9, duration: 0.1 });
       });
-  
+
       document.addEventListener("mouseup", () => {
         if (!isLocked) gsap.to(cursor, { scale: 1, duration: 0.1 });
       });
-  
+
       document.addEventListener("mousemove", (event) => {
         if (!isLocked) {
           gsap.to(cursor, {
@@ -112,44 +112,43 @@ document.addEventListener("DOMContentLoaded", function () {
           });
         }
       });
-  
+
       document.querySelectorAll("a").forEach((link) => {
         let rect = null;
-  
+
         link.addEventListener("mouseenter", (event) => {
           if (navbar && navbar.contains(link)) return; // Skip links inside the navbar
-  
+
           isLocked = true;
           const target = event.currentTarget;
           rect = target.getBoundingClientRect();
-  
-          // Apply the glowing light effect to the cursor itself
+
+          // Slightly increase the cursor size to match the height of the button
           gsap.to(cursor, {
-            height: "220%",
-            width: "220%",
-            background: "radial-gradient(rgba(255, 255, 255, 0.3) 12%, rgba(0, 0, 0, 0.2) 100%)",
-            transform: "translate(-50%, -50%)",
+            width: `${rect.height}px`,
+            height: `${rect.height}px`,
+            background:
+              "radial-gradient(circle, rgba(255, 255, 255, 0.6) 30%, rgba(255, 255, 255, 0) 70%)",
             duration: 0.3,
             ease: "power2.out",
-            pointerEvents: "none",
           });
-  
-          // Position the cursor above the button
+
+          // Center the cursor on the button
           gsap.to(cursor, {
             x: rect.left + rect.width / 2,
             y: rect.top + rect.height / 2,
             duration: 0.3,
             ease: "power2.out",
           });
-  
-          // Optionally, you can add a small scale effect to the button itself
+
+          // Optionally, slightly scale up the button for additional emphasis
           gsap.to(target, {
             scale: 1.05,
             duration: 0.3,
             ease: "power2.out",
           });
         });
-  
+
         link.addEventListener("mousemove", (event) => {
           if (rect) {
             const offsetX = (event.clientX - rect.left - rect.width / 2) * magneticEffectVelocityX;
@@ -168,23 +167,22 @@ document.addEventListener("DOMContentLoaded", function () {
             });
           }
         });
-  
+
         link.addEventListener("mouseleave", (event) => {
           if (navbar && navbar.contains(link)) return; // Skip links inside the navbar
-  
+
           isLocked = false;
           const target = event.currentTarget;
-  
-          // Reset the cursor effects
+
+          // Reset the cursor to its original size and remove the light effect
           gsap.to(cursor, {
-            height: "1em",
             width: "1em",
+            height: "1em",
             background: "none",
-            transform: "translate(-50%, -50%)",
             duration: 0.3,
             ease: "power2.out",
           });
-  
+
           // Reset the button scale effect
           gsap.to(target, {
             scale: 1,
@@ -193,13 +191,13 @@ document.addEventListener("DOMContentLoaded", function () {
             duration: 0.3,
             ease: "power2.out",
           });
-  
+
           setTimeout(() => {
             if (!isLocked) cursor.classList.remove("lock");
           }, 100);
         });
       });
-  
+
       document.querySelectorAll("p, h1, h2, h3, h4, h5, h6, textarea, input").forEach((elem) => {
         elem.addEventListener("mouseover", () => {
           cursorDot.style.borderRadius = "2px"; // Set border-radius to 2px for text elements
@@ -210,7 +208,7 @@ document.addEventListener("DOMContentLoaded", function () {
             ease: "power2.out",
           });
         });
-  
+
         elem.addEventListener("mouseout", () => {
           cursorDot.style.borderRadius = "50%"; // Reset to the default border-radius
           gsap.to(cursor, {
