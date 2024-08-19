@@ -90,10 +90,13 @@ document.addEventListener("DOMContentLoaded", function () {
       const navbar = document.getElementById("navbar");
 
       let isLocked = false;
-      const magneticEffectVelocity = 0.15;
-      const cursorPadding = 0.1; // Fixed padding in rem
-      const additionalPadding = 0.4; // Additional padding for links without border-radius in rem
-      const additionalBorderRadius = "0.3rem"; // Border-radius for links without border-radius
+
+      // Adjust these values to reduce the magnetic effect
+      const magneticEffectVelocityX = 0.1; // Reduced X-axis velocity for less horizontal magnetism
+      const magneticEffectVelocityY = 0.15; // Y-axis velocity stays slightly stronger
+      const cursorPadding = 0.1; // Reduced padding to make the area smaller
+      const additionalPadding = 0.4; // Reduced padding for links without border-radius
+      const additionalBorderRadius = "0.3rem"; // Kept the same
 
       document.addEventListener("mousedown", () => {
         if (!isLocked) gsap.to(cursor, { scale: 0.9, duration: 0.1 });
@@ -150,8 +153,8 @@ document.addEventListener("DOMContentLoaded", function () {
         link.addEventListener("mousemove", (event) => {
           if (rect) {
             const target = event.currentTarget;
-            const offsetX = (event.clientX - rect.left - rect.width / 2) * magneticEffectVelocity;
-            const offsetY = (event.clientY - rect.top - rect.height / 2) * magneticEffectVelocity;
+            const offsetX = (event.clientX - rect.left - rect.width / 2) * magneticEffectVelocityX;
+            const offsetY = (event.clientY - rect.top - rect.height / 2) * magneticEffectVelocityY;
             gsap.to(cursor, {
               x: rect.left + rect.width / 2 + offsetX,
               y: rect.top + rect.height / 2 + offsetY,
